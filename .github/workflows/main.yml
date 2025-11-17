@@ -14,14 +14,18 @@ jobs:
           java-version: '21'
       - uses: android-actions/setup-android@v3
       - run: |
+          export JAVA_HOME=$JAVA_HOME_21_X64
+          export PATH=$JAVA_HOME/bin:$PATH
+          java -version
           npm init -y
           npm install @capacitor/cli@latest @capacitor/core@latest @capacitor/android@latest
           mkdir -p dist
           echo '<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Hallor</title></head><body><script>window.location.href="https://hallor.sbs"</script></body></html>' > dist/index.html
           echo '{"appId":"com.hallor.app","appName":"Hallor","webDir":"dist","server":{"url":"https://hallor.sbs","cleartext":false}}' > capacitor.config.json
           npx cap add android
+          echo "org.gradle.java.home=$JAVA_HOME" >> android/gradle.properties
           npx cap sync android
-          cd android && chmod +x gradlew && ./gradlew assembleDebug
+          cd android && chmod +x gradlew && ./gradlew assembleDebug -Dorg.gradle.java.home=$JAVA_HOME
       - uses: actions/upload-artifact@v4
         with:
           name: app
