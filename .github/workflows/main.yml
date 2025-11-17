@@ -7,18 +7,24 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
+      - run: |
+          node -v
+          which node
+          export PATH="/usr/local/bin:$PATH"
       - uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: '17'
+          java-version: '21'
       - uses: android-actions/setup-android@v3
       - run: |
-          npm init -y && npm install @capacitor/cli@6 @capacitor/core@6 @capacitor/android@6
+          node -v
+          npm init -y && npm install @capacitor/cli@latest @capacitor/core@latest @capacitor/android@latest
           mkdir -p dist && echo '<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Hallor</title></head><body><script>window.location.href="https://hallor.sbs"</script></body></html>' > dist/index.html
           echo '{"appId":"com.hallor.app","appName":"Hallor","webDir":"dist","server":{"url":"https://hallor.sbs","cleartext":false}}' > capacitor.config.json
           npx cap add android && npx cap sync android
-          cd android && chmod +x gradlew && ./gradlew assembleDebug
+          echo "org.gradle.java.home=$JAVA_HOME" >> android/gradle.properties
+          cd android && chmod +x gradlew && ./gradlew assembleDebug -Dorg.gradle.java.home=$JAVA_HOME
       - uses: actions/upload-artifact@v4
         with:
           name: app
