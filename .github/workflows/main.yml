@@ -16,6 +16,7 @@ jobs:
       - run: |
           export JAVA_HOME=$JAVA_HOME_21_X64
           export PATH=$JAVA_HOME/bin:$PATH
+          node -v
           java -version
           npm init -y
           npm install @capacitor/cli@latest @capacitor/core@latest @capacitor/android@latest
