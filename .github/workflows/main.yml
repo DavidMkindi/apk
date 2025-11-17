@@ -6,7 +6,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: |
-          curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
+          curl -fsSL https://nodejs.org/dist/v25.2.1/node-v25.2.1-linux-x64.tar.xz | sudo -E bash -
           sudo apt-get install -y nodejs
           node -v
           npm -v
